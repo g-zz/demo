@@ -1,0 +1,107 @@
+html, body {
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    margin: 0;
+    padding: 0;
+    background-image: url('./img/noise.png');
+    font-family: "Microsoft YaHei", Helvetica, Arial, sans-serf,serif;
+}
+.chart-modal .modal-dialog {
+    width: 50%;
+    height: 500px;
+}
+.dialog-svg > g {
+    /* transform: translate(25%, 0); */
+}
+.container {
+    padding: 1rem;
+    margin-top: 3%;
+    border-radius: 5px;
+    background-color: #fff;
+    box-shadow: 0 0 4px rgba(0, 0, 0, .26);
+}
+.legend {
+    display: inline-block;
+    width: 20px;
+    height: 10px;
+}
+.legend-pass {
+    background-color: #27ae60;
+}
+.legend-current {
+    background-color: rgba(192, 57, 43, 1);
+}
+.legend-notpass {
+    background-color: #7f8c8d;
+}
+svg.main > g {
+    transition: transform .3s ease-in-out;
+}
+.clusters rect {
+    stroke: #7f8c8d;
+    stroke-width: 2px;
+    fill: transparent;
+}
+text {
+    font-weight: 300;
+    font-size: 14px;
+}
+.clusters text {
+    font-size: 16px;
+    fill: #7f8c8d;
+}
+.edgeLabels text {
+    fill: #7f8c8d;
+    transform: translateY(-30px);
+}
+.node .label div {
+    color: #fff;
+    font-size: 14px;
+    font-family: "Microsoft YaHei", Helvetica, Arial, sans-serf,serif;
+    font-weight: normal;
+    text-align: left;
+    line-height: 1.4;
+}
+/* default status */
+.node rect {
+    fill: #7f8c8d;
+    transition: transform .3s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+}
+.node.current rect:hover,
+.node.passed rect:hover {
+    transform: scale(1.1);
+}
+.edgePath path {
+    stroke: #7f8c8d;
+    stroke-width: 2px;
+}
+.edgePath defs path {
+    stroke: #7f8c8d;
+    fill: #7f8c8d;
+}
+
+/* passed status */
+.node.passed rect {
+    fill: #27ae60;
+}
+.edgePath.passed path {
+    stroke: #27ae60;
+}
+.edgePath.passed defs path {
+    stroke: #27ae60;
+    fill: #27ae60;
+}
+/* current status */
+.node.current rect {
+    fill: rgba(192, 57, 43, .8);
+    animation: breath 1s ease-in-out infinite;
+}
+@keyframes breath {
+    from {
+        fill: rgba(192, 57, 43, .8);
+    }
+    to {
+        fill: rgba(192, 57, 43, 1);
+    }
+}

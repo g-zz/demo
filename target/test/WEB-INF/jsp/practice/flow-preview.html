@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>流程预览</title>
+    <link rel="stylesheet" href="../../statics/css/bootstrap.min.css">
+    <link rel="stylesheet" href="../../statics/css/bootstrap-dialog.min.css">
+    <link rel="stylesheet" href="../../statics/css/tippy.css">
+    <link rel="stylesheet" href="../../statics/css/main.css">
+</head>
+<body>
+<div class="container">
+    <div class="row">
+        <div class="col-md-6">
+            <div class="btn-group">
+                <button class="btn btn-primary">济宁分行营业部</button>
+                <button class="btn btn-primary">济宁分行</button>
+                <button class="btn btn-primary">济南分行</button>
+                <button class="btn btn-primary">总行</button>
+            </div>
+        </div>
+        <div class="col-md-6 text-right">
+            <button class="btn btn-primary">查看会签</button>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-12">
+            <svg class="main" width="100%" height="450">
+                <g></g>
+            </svg>
+        </div>
+        <div class="col-md-12">
+            <p><span class="legend legend-pass"></span>已通过节点</p>
+            <p><span class="legend legend-current"></span>当前节点</p>
+            <p><span class="legend legend-notpass"></span>未达到节点</p>
+        </div>
+    </div>
+</div>
+<div style="visibility: hidden;">
+    <svg class="innerGraph" width="300" height="160">
+        <g></g>
+    </svg>
+</div>
+
+<script src="../../statics/js/jquery-3.2.1.min.js"></script>
+<script src="../../statics/js/lodash.js"></script>
+<script src="../../statics/js/tippy.min.js"></script>
+<script src="../../statics/js/d3.v3.min.js"></script>
+<script src="../../statics/js/dagre-d3.js"></script>
+<script src="../../statics/js/bootstrap.min.js"></script>
+<script src="../../statics/js/bootstrap-dialog.min.js"></script>
+<script>
+    var main = new dagreD3.graphlib.Graph({compound: true})
+            .setGraph({
+                rankdir: 'LR',
+                marginy: 50
+            });
+    //画节点
+    var nodes = [{
+        label: '开始',
+        pass: true
+    }, {
+        label: '济宁分行营业部<br>业务管理部<br>业务管理岗<br>某某',
+        pass: true
+    }, {
+        label: '济宁分行营业部<br>行长室<br>支行确认<br>某某',
+        pass: true
+    }, {
+        label: '济宁分行<br>国际业务部',
+        pass: true
+    }, {
+        label: '济宁分行<br>公司银行部',
+        pass: true
+    }, {
+        label: '济宁分行<br>计划财务部',
+        current: true
+    }, {
+        label: '济宁分行<br>行长室<br>主线行领导<br>某某',
+    }, {
+        label: '济宁分行<br>行长室<br>利率行领导<br>某某',
+    }, {
+        label: '济宁分行<br>行长室<br>行长<br>某某',
+    }, {
+        label: '济南分行<br>公司银行部',
+    }, {
+        label: '济南分行<br>国际业务部',
+    }, {
+        label: '济南分行<br>计划财务部',
+    }, {
+        label: '济南分行<br>行长室<br>主线行领导<br>某某',
+    }, {
+        label: '济南分行<br>行长室<br>利率行领导<br>某某',
+    }, {
+        label: '济南分行<br>行长室<br>行长<br>某某',
+    }, {
+        label: '总行<br>资产负债部<br>利率管理初审<br>某某',
+    }, {
+        label: '总行<br>资产负债部<br>利率管理复核<br>某某',
+    }, {
+        label: '总行<br>资产负债部<br>利率管理审批<br>某某',
+    }, {
+        label: '总行<br>行长室<br>利率行领导<br>某某',
+    }, {
+        label: '总行<br>行长室<br>行长<br>某某',
+    }, {
+        label: '结束'
+    }];
+    console.log(nodes.length);
+
+    //把节点放入图中
+    for (var i = 0; i < nodes.length; i++) {
+        var elem = nodes[i];
+        var labels = {};
+        labels.label = elem.label;
+        labels.labelType = 'html';
+        if (_.has(elem, 'pass')) {
+            labels.class = 'passed';
+        }
+        if (_.has(elem, 'current')) {
+            labels.class = 'current';
+        }
+        main.setNode(i, labels);
+    }
+    //把框放入图中
+    main.setNode('first_group', {label: '济宁分行营业部', class: 'first-group', clusterLabelPos: 'top'});
+    main.setNode('second_group', {label: '济宁分行', class: 'second_group', clusterLabelPos: 'top'});
+    main.setNode('third_group', {label: '济南分行', class: 'third_group', clusterLabelPos: 'top'});
+    main.setNode('forth_group', {label: '总行', class: 'forth_group', clusterLabelPos: 'top'});
+    //节点放入框内
+    main.setParent(1, 'first_group');
+    main.setParent(2, 'first_group');
+    for (var i = 3; i <= 8; i++) {
+        main.setParent(i, 'second_group');
+    }
+    for (var i = 9; i <= 14; i++) {
+        main.setParent(i, 'third_group');
+    }
+    for (var i = 15; i <= 19; i++) {
+        main.setParent(i, 'forth_group');
+    }
+    //画线
+    main.setEdge(0, 1, {label: '同意', class: 'passed'});
+    main.setEdge(1, 2, {label: '同意', class: 'passed'});
+    main.setEdge(2, 3, {label: '同意', class: 'passed'});
+    main.setEdge(2, 4, {label: '同意', class: 'passed'});
+    main.setEdge(3, 5, {label: '同意', class: 'passed'});
+    main.setEdge(4, 5, {label: '同意', class: 'passed'});
+    main.setEdge(5, 6, {label: ''});
+    main.setEdge(6, 7, {label: ''});
+    main.setEdge(7, 8, {label: ''});
+    main.setEdge(8, 9, {label: ''});
+    main.setEdge(8, 10, {label: ''});
+    main.setEdge(9, 11, {label: ''});
+    main.setEdge(10, 11, {label: ''});
+    main.setEdge(11, 12, {label: ''});
+    main.setEdge(12, 13, {label: ''});
+    main.setEdge(13, 14, {label: ''});
+    main.setEdge(14, 15, {label: ''});
+    main.setEdge(15, 16, {label: ''});
+    main.setEdge(16, 17, {label: ''});
+    main.setEdge(17, 18, {label: ''});
+    main.setEdge(18, 19, {label: ''});
+    main.setEdge(19, 20, {label: ''});
+
+    //设置圆角矩形框，先设置样式，在渲染
+    main.nodes().forEach(function (v) {
+        var node = main.node(v);
+        node.rx = node.ry = 4;
+    });
+    //在界面显示（渲染）
+    var mainRender = new dagreD3.render();
+    mainRender(d3.select("svg.main > g"), main);
+
+    var mainSvg = d3.select("svg.main");
+    var mainInner = mainSvg.select("g");
+    //设置放大缩小
+    var zoom = d3.behavior.zoom().on("zoom", function () {
+        mainInner.attr("transform", "translate(" + d3.event.translate + ")scale(" + d3.event.scale + ")");
+    });
+    mainSvg.call(zoom);
+
+    //按钮和图实现联动
+    var clusters = document.querySelectorAll('.cluster');//代表四个框，默认生成cluster
+    var btns = document.querySelectorAll('.btn');
+    for (var i = 0; i < clusters.length; i++) {
+        var cluster = clusters[i];
+        var btn = btns[i];
+        btn.dataset.index = i;
+        if (i == 0) {
+            btn.dataset.index = i;
+        } else {
+            var translate = clusters[i].getAttribute('transform');
+            var res = translate.replace(/translate\(/g, '');
+            res = res.replace(/,\d+\.\d\)/, '');
+            btns[i].dataset.trans = res;
+        }
+    }
+    var btnGroup = document.querySelector('.btn-group');
+    var mySvg = document.querySelector('svg.main>g');
+    btnGroup.addEventListener('click', function (e) {
+        var dis = e.target.dataset.trans;
+        var index = e.target.dataset.index;
+        if (index == 0) {
+            mySvg.setAttribute('transform', 'translate(0,0)scale(1)');
+        } else {
+            mySvg.setAttribute('transform', 'translate(-' + (parseInt(dis) - 379) + ',0)scale(1)');
+        }
+    });
+
+
+    var innerGraph = new dagreD3.graphlib.Graph({compound: true})
+            .setGraph({
+                rankdir: 'LR'
+            })
+            .setDefaultEdgeLabel(function () {
+                return {};
+            });
+    var Innernodes = [{
+        label: '济宁分行<br>计划财务部<br>主线初审<br>某某',
+        pass: true
+    }, {
+        label: '济宁分行<br>计划财务部<br>主线审批<br>某某',
+        current: true
+    }];
+    for (var i = 0; i < Innernodes.length; i++) {
+        var elem = Innernodes[i];
+        var eachLabel = {};
+        eachLabel.label = elem.label;
+        eachLabel.labelType = 'html';
+        if (_.has(elem, 'pass')) {
+            eachLabel.class = 'passed';
+        }
+        if (_.has(elem, 'current')) {
+            eachLabel.class = 'current';
+        }
+        innerGraph.setNode(i, eachLabel);
+    }
+
+    innerGraph.setEdge(0,1,{label:'同意',class:'passed'});
+
+    //设置圆角矩形框，先设置样式，在渲染
+    innerGraph.nodes().forEach(function (v) {
+        var node = innerGraph.node(v);
+        node.rx = node.ry = 4;
+    });
+
+    var innerGraphRender = new dagreD3.render();
+    var innerGraphSvg = d3.select('svg.innerGraph');
+    var innerGraphInner = innerGraphSvg.select('g');
+    innerGraphRender(d3.select('svg.minor g'),innerGraph);
+//    tippy('g.node.current',{
+//        position:'right',
+//        animation:'shift',
+//        arrow:'true',
+//        theme:'light',
+//        html:'#template',
+//        distance:20,
+//        trigger:'click'
+//    });
+</script>
+</body>
+</html>

@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.gz.demo.mapper.HistoryTestMapper">
+
+    <!--<resultMap id="HistoryTestVo" type="com.gz.demo.domain.HistoryTestVo">-->
+        <!--<result column="test_type" property="testType" jdbcType="VARCHAR"/>-->
+        <!--<result column="cust_code" property="custCode" jdbcType="VARCHAR"/>-->
+        <!--<result column="cust_name" property="custName" jdbcType="VARCHAR"/>-->
+        <!--<result column="cust_org" property="custOrg" jdbcType="VARCHAR"/>-->
+        <!--<result column="test_org" property="testOrg" jdbcType="VARCHAR"/>-->
+        <!--<result column="test_or" property="testOr" jdbcType="VARCHAR"/>-->
+        <!--<result column="crt_tm" property="crtTm" jdbcType="DATE"/>-->
+        <!--<result column="upt_tm" property="uptTm" jdbcType="DATE"/>-->
+        <!--<result column="sta" property="sta" jdbcType="SMALLINT"/>-->
+        <!--<result column="fxp_test_dh" property="fxpTestDh" jdbcType="VARCHAR"/>-->
+        <!--<result column="merge_prod_name" property="mergeProdName" jdbcType="VARCHAR"/>-->
+        <!--<result column="one_t_eva" property="oneTEva" jdbcType="SMALLINT"/>-->
+        <!--<result column="one_t_raroc" property="oneTRaroc" jdbcType="SMALLINT"/>-->
+    <!--</resultMap>-->
+
+    <select id="queryTest" resultType="com.gz.demo.domain.HistoryTestVo">
+        SELECT *
+        FROM T_G_DT_FXP_TEST
+        <where>
+            AND DT_STA='N'
+            <if test="testType!=null and testType!=''">AND TEST_TYPE=#{testType}</if>
+            <if test="custCode!=null and custCode!=''">AND CUST_CODE=#{custCode}</if>
+            <if test="custName!=null and custName!=''">AND CUST_NAME=#{custName}</if>
+            <if test="custOrg!=null and custOrg!=''">AND CUST_ORG=#{custOrg}</if>
+            <if test="testOrg!=null and testOrg!=''">AND TEST_ORG=#{testOrg}</if>
+            <if test="testOr!=null and testOr!=''">AND TEST_OR=#{testOr}</if>
+            <if test="crtTmStart!=null">AND DATE(CRT_TM)>=#{crtTmStart}</if>
+            <if test="crtTmEnd!=null">AND #{crtTmEnd}>=DATE(CRT_TM)</if>
+            <if test="uptTm!=null">AND UPT_TM=#{uptTm}</if>
+            <if test="sta!=null and sta!=''">AND STA=#{sta}</if>
+
+        </where>
+        ORDER BY
+        FXP_TEST_DH DESC
+    </select>
+
+    <select id="queryById" resultType="com.gz.demo.domain.HistoryTestVo">
+        select * from t_g_dt_fxp_test
+        <where>
+            AND dt_sta='N'
+            AND id IN
+            <foreach collection="idsList" item="item" index="index" open="(" close=")" separator=",">
+                #{item}
+            </foreach>
+        </where>
+    </select>
+
+    <update id="testDelete" parameterType="java.util.List">
+        UPDATE t_g_dt_fxp_test
+        SET dt_sta='D'
+        WHERE id IN 
+        <foreach collection="idsList" item="item" index="index" open="(" close=")" separator=",">
+            #{item}
+        </foreach>
+    </update>
+</mapper>
