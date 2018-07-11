@@ -56,3 +56,11 @@
     export to /db2data/1.del of del select * from T_C_DC_DIC_INF;
     导入表的数据
     load from /db2data/1.del of del insert into T_C_DC_DIC_INF;
+15、db2diag.log位置：此文件是放在/home/db2inst1/sqllib/db2dump目录下。
+16、查看有几个数据库：db2 list db directory
+17、查看缓冲区：select * from SYSCAT.BUFFERPOOLS
+18、查看DB2缓冲池、表空间、表、存储过程等
+    select * from syscat.bufferpools;
+    select * from syscat.tablespaces;
+    select * from syscat.tables;
+    select * from syscat.procedures;
