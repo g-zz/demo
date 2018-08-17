@@ -52,7 +52,7 @@
             source[result.id] = result.text;
          }
     取值：source[]
-10、去当前时间
+10、取当前时间
     long times = System.currentTimeMillis();
 11、数组转List
     List<Integer>   list= Arrays.asList(ids);
