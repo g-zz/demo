@@ -12,3 +12,18 @@
 	service iptables start
     关闭防火墙：
 	service iptables stop
+6、服务器间传输文件
+    实例1：从远处复制文件到本地目录
+    scp root@192.168.120.204:/opt/soft/nginx-0.5.38.tar.gz /opt/soft/
+    从192.168.120.204机器上的/opt/soft/的目录中下载nginx-0.5.38.tar.gz 文件到本地/opt/soft/目录中
+    实例2：从远处复制到本地
+    scp -r root@192.168.120.204:/opt/soft/mongodb /opt/soft/
+    从192.168.120.204机器上的/opt/soft/中下载mongodb 目录到本地的/opt/soft/目录来。
+    实例3：上传本地文件到远程机器指定目录
+    scp /opt/soft/nginx-0.5.38.tar.gz root@192.168.120.204:/opt/soft/scptest
+    复制本地opt/soft/目录下的文件nginx-0.5.38.tar.gz 到远程机器192.168.120.204的opt/soft/scptest目录
+    实例4：上传本地目录到远程机器指定目录
+    scp -r /opt/soft/mongodb root@192.168.120.204:/opt/soft/scptest
+    上传本地目录 /opt/soft/mongodb到远程机器192.168.120.204上/opt/soft/scptest的目录中去
+7、查看目录大小
+    du -sh       du -sh *

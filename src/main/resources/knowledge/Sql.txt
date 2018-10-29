@@ -1,0 +1,17 @@
+1、列的增删改查
+alter table T_G_DT_FXP_APY add crt_or varchar(32);
+alter table T_G_DT_FXP_APY add crt_or varchar(32) default 'false';
+alter table T_G_DT_FXP_APY alter column set default 'false';
+alter table T_G_DT_FXP_APY alter column crt_or set data type varchar(32);
+alter table T_G_DT_FXP_APY drop column crt_or;
+2、reorg和runstates
+call sysproc.admin_cmd('reorg table T_G_DT_FXP_APY');
+call sysproc.admin_cmd('runstates on table T_G_DT_FXP_APY');
+3、更改存储过程所有者
+transfer ownership of procedure APPGPPMS.T_G_DT_FXP_APY to user DB2INST1 preserve privileges;
+4、添加或删除某个字段非空属性
+alter table tabname ALTER colname set/drop not null
+5、表注释的添加
+comment on table [表名]  is  '注释内容';
+6、列注释的添加
+comment  on  column  [表名].[字段名]   is  '注释内容';

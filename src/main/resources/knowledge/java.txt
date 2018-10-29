@@ -1,0 +1,4 @@
+1、取当前时间
+    long times = System.currentTimeMillis();
+2、数组转List
+    List<Integer> list= Arrays.asList(ids);

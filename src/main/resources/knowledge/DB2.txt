@@ -31,6 +31,7 @@
     开启:db2start
     断开所有链接：db2 force application all
     停止:db2stop
+    查看连接:db2 list application show detail
 7、实例用户
     db2ilist  ---列出主机所有实例
     db2icrt  instanceName   ---创建实例名为instanceName的实例
@@ -59,12 +60,15 @@
 15、db2diag.log位置：此文件是放在/home/db2inst1/sqllib/db2dump目录下。
 16、查看有几个数据库：db2 list db directory
 17、查看缓冲区：select * from SYSCAT.BUFFERPOOLS
-18、查看DB2缓冲池、表空间、表、存储过程等
+18、查看DB2缓冲池、表空间、表、字段、存储过程等
     select * from syscat.bufferpools;
     select * from syscat.tablespaces;
     select * from syscat.tables;
+    select * from syscat.columns;
     select * from syscat.procedures;
 19、查询锁表情况
     select * from sysibmadm.locks_held;
     强制断开某个链接
-    call sysproc.admin_cmd('force applications(AGENT_ID)');
+20、linux执行DB2 sql语句
+    链接数据库，db2 connect to
+    执行sql语句，db2 'select * from aaa'
