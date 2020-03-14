@@ -1,0 +1,70 @@
+1、linux下用命令怎么显示db2数据库的所有表
+    db2 list tables for all
+2、DB2创建用户及赋予权限
+    (1)增加一个操作系统用户
+    groupadd ppms---添加用户组ppms
+    useradd -m -g ppms -d /home/ppms ppms---添加用户ppms
+    passwd ppms---修改test的密码
+    (2)赋予用户DB2权限
+    db2 connect to sample---连接到sample数据库
+    db2 grant connect on database to user test---赋予test用户sample数据库的connect权限
+    DB2 GRANT SELECT ON TABLE ECGD.CL_COMMODITY TO USER dstuser;---授予用户读取表权限
+    db2 connect reset--关闭连接
+
+3、查询存在的存储过程
+    select * from syscat.procedures
+4、查看当前的schema
+   db2 "values current schema"
+   查看当前存在的schema
+   db2 "select SCHEMANAME from syscat.SCHEMATA"
+   创建一个独立的schema
+   db2 "create schema test"
+   切换schema
+   db2 "set current schema='TEST'"
+   查看schema下的表
+   db2 list tables
+   删除schema，删除schema需要使用函数
+   CALL SYSPROC.ADMIN_DROP_SCHEMA('SCHNAME', NULL, 'ERRORSCHEMA', 'ERRORTABLE')
+5、目录没有，但是数据库还能查出，把该数据库编目去了，就不会list出来了，再到该目录下删除文件夹
+    db2 uncatalog db PBOC，
+6、DB2启停
+    开启:db2start
+    断开所有链接：db2 force application all
+    停止:db2stop
+7、实例用户
+    db2ilist  ---列出主机所有实例
+    db2icrt  instanceName   ---创建实例名为instanceName的实例
+    db2idrop  instanceName   ---删除实例名为instanceName的实例
+8、怎么查看DB2安装目录
+    find / -name db2
+9、查看活动的数据库
+    db2 list active databases
+10、显示当前的实例
+    db2 get instance
+11、dialog rc -2146498587 没有操作系统权限
+    /opt/ibm/db2/V10.5/instance/db2iupdate db2inst1(给实例用户赋权，DB2不是每个文件都是777的)
+12、查询数据库字段类型和长度（schema）
+    select *(colname,tabschema) from syscat.columns where tabname='';
+13、绑定存储过程，package名称
+    select * from syscat.packagedep where pkgname in(
+        select * bname from sysibm.sysdependencies where dname in(
+            select specificname from syscat.procedures where procname='P_PPMS_STAR'))
+
+    db2 rebind APPGPPMS.P_PPMS_STAR
+14、大量数据到处导入
+    导出表中数据
+    export to /db2data/1.del of del select * from T_C_DC_DIC_INF;
+    导入表的数据
+    load from /db2data/1.del of del insert into T_C_DC_DIC_INF;
+15、db2diag.log位置：此文件是放在/home/db2inst1/sqllib/db2dump目录下。
+16、查看有几个数据库：db2 list db directory
+17、查看缓冲区：select * from SYSCAT.BUFFERPOOLS
+18、查看DB2缓冲池、表空间、表、存储过程等
+    select * from syscat.bufferpools;
+    select * from syscat.tablespaces;
+    select * from syscat.tables;
+    select * from syscat.procedures;
+19、查询锁表情况
+    select * from sysibmadm.locks_held;
+    强制断开某个链接
+    call sysproc.admin_cmd('force applications(AGENT_ID)');

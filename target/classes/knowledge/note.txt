@@ -8,26 +8,35 @@
     $('#areaSelect').attr("disabled",false);
     $('#areaSelect').removeAttr("disabled");
     $('#areaSelect').attr("disabled","");
-2、取值与赋值
+
+2、设置CSS样式
+    $("#id").css("display","none");
+    $("#id").css("display","block");
+3、取值与赋值
     $("#id").val();
-    $("#id").val(”123");
+    $("#id").val(“123”);
 4、截取字符串
    js：
     substring(首位，末位)，第一个参数代表开始位置,第二个参数代表结束位置的下一个位置;
     substr(首位，长度)，第一个参数代表开始位置,第二个参数代表截取的长度
    java:
     substring(首位，末位); 第一个是0，包含首，不包含尾
-5、前台EL表达式取list值
+5、DB2整理数据库碎片
+    call Sysproc.admin_cmd(REORG TABLE t_g_dt_fxp);
+6、前台EL表达式取list值
     长度：${prms?size}
     取单个值： ${prms[3].username}
     遍历取值：<c:forEach var="user" items="${list}">
                 <c:out value="${user.username}" />
              </c:forEach>
-6、前台取后台传来的list放到一个对象中
+7、linux执行DB2 sql语句
+    链接数据库，db2 connect to
+    执行sql语句，db2 'select * from aaa'
+8、前台取后台传来的list放到一个对象中
     var source = {};
     循环赋值：source[key] = value;
     取值时：value = source[key];
-7、可编辑表格
+9、可编辑表格
     下拉：var source=[];
        for(){
         var result={};
@@ -43,7 +52,11 @@
             source[result.id] = result.text;
          }
     取值：source[]
-8、前台向后台传递对象数组(前台转成JSON传，后台用String aths接收)
+10、取当前时间
+    long times = System.currentTimeMillis();
+11、数组转List
+    List<Integer>   list= Arrays.asList(ids);
+12、前台向后台传递对象数组(前台转成JSON传，后台用String aths接收)
     var ath = new Array();
     for(var i=0;i<selRow.lenth;i++){
         var athdata = new Object();
@@ -58,11 +71,5 @@
         success:function(){
         }
     });
-9、EL表达式为空的话：${xxx.xxx!}
-    freemarker判空：<#if xxx??>（xxx为空的话走if）
-10、字符串截取
-    xxx.substr(0,5);        从0开始，截取5位
-    xxx.substring(0,5);     第0位到第5位
-
 
 

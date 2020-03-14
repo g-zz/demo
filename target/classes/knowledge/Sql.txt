@@ -1,0 +1,42 @@
+1、列的增删改查，设置默认值
+alter table T_G_DT_FXP_APY add crt_or varchar(32);
+alter table T_G_DT_FXP_APY add crt_or varchar(32) default 'false';
+alter table T_G_DT_FXP_APY alter column set default 'false';
+alter table T_G_DT_FXP_APY alter column crt_or set data type varchar(32);
+alter table T_G_DT_FXP_APY drop column crt_or;
+2、reorg和runstates
+call sysproc.admin_cmd('reorg table T_G_DT_FXP_APY');
+call sysproc.admin_cmd('runstates on table T_G_DT_FXP_APY');
+3、查询存在的存储过程
+    select * from syscat.procedures
+3、更改存储过程所有者
+transfer ownership of procedure APPGPPMS.T_G_DT_FXP_APY to user DB2INST1 preserve privileges;
+4、添加或删除某个字段非空属性
+alter table tabname ALTER colname set/drop not null
+5、表注释的添加
+comment on table [表名]  is  '注释内容';
+6、列注释的添加
+comment  on  column  [表名].[字段名]   is  '注释内容';
+7、表添加索引
+CREATE INDEX IDX_TABLENAME_COLUMNNAME ON TABLENAME(COLUMNNAME)
+    PCTFREE 10
+	MINPCTUSED 10
+	ALLOW REVERSE SCANS
+8、删除索引
+DROP INDEX IDX_TABLENAME_COLUMNNAME
+13、绑定存储过程，package名称
+    select * from syscat.packagedep where pkgname in(
+        select bname from sysibm.sysdependencies where dname in(
+            select specificname from syscat.procedures where procname='P_PPMS_STAR'))
+
+    db2 rebind APPGPPMS.P_PPMS_STAR
+18、查看DB2缓冲池、表空间、表、字段、存储过程、索引等
+    select * from syscat.bufferpools;
+    select * from syscat.tablespaces;
+    select * from syscat.tables;
+    select * from syscat.columns;
+    select * from syscat.procedures;
+    select * from syscat.indexes;
+19、查询锁表情况
+    select * from sysibmadm.locks_held;
+

@@ -1,0 +1,7 @@
+1、查看Was进程
+ps -ef |grep was
+2、80端口没有开
+ps -ef |grep http看有没有http服务
+没有的话cd /opt/IBM/HTTPServer/bin
+sh apachectl start 启
+sh apachectl stop 停
